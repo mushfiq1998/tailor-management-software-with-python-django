@@ -1,0 +1,247 @@
+{% extends 'user_management/base.html' %}
+
+{% block title %}Profile - TailorPro{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header mb-4">
+        <div class="text-center position-relative">
+            <div class="profile-avatar">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <h2 class="mt-3">{{ user.get_full_name|default:user.username }}</h2>
+            <span class="badge bg-primary">{{ user.user_type.title }}</span>
+        </div>
+    </div>
+
+    <!-- Profile Form -->
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form method="post" class="profile-form">
+                        {% csrf_token %}
+                        
+                        <!-- Personal Information Section -->
+                        <div class="profile-section">
+                            <h4 class="section-title">
+                                <i class="bi bi-person-lines-fill me-2"></i>
+                                Personal Information
+                            </h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">First Name</label>
+                                    {{ user_form.first_name }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Last Name</label>
+                                    {{ user_form.last_name }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    {{ user_form.email }}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number</label>
+                                    {{ user_form.phone_number }}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Address</label>
+                                    {{ user_form.address }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Role Specific Information Section -->
+                        <div class="profile-section mt-4">
+                            <h4 class="section-title">
+                                {% if user.user_type == 'CUSTOMER' %}
+                                    <i class="bi bi-person-badge me-2"></i>Customer Details
+                                {% else %}
+                                    <i class="bi bi-scissors me-2"></i>Tailor Details
+                                {% endif %}
+                            </h4>
+                            <div class="row g-3">
+                                {% if user.user_type == 'CUSTOMER' %}
+                                    <div class="col-md-6">
+                                        <label class="form-label">Gender</label>
+                                        {{ profile_form.gender }}
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Preferred Styles</label>
+                                        {{ profile_form.preferred_styles }}
+                                    </div>
+                                {% else %}
+                                    <div class="col-md-4">
+                                        <label class="form-label">Experience (Years)</label>
+                                        {{ profile_form.experience_years }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Hourly Rate</label>
+                                        {{ profile_form.hourly_rate }}
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Specialization</label>
+                                        {{ profile_form.specialization }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="profile-actions mt-4 text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-check-circle me-2"></i>Save Changes
+                            </button>
+                            <a href="{% url 'password_change' %}" class="btn btn-outline-secondary btn-lg px-5 ms-2">
+                                <i class="bi bi-key me-2"></i>Change Password
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .profile-header {
+        padding: 30px 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 15px;
+        margin-bottom: 30px;
+    }
+
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        background-color: #fff;
+        border-radius: 60px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-avatar i {
+        font-size: 60px;
+        color: #6c757d;
+    }
+
+    .section-title {
+        color: #495057;
+        font-size: 1.25rem;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e9ecef;
+        margin-bottom: 20px;
+    }
+
+    .profile-section {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #ff8c42;
+        box-shadow: 0 0 0 0.25rem rgba(255, 140, 66, 0.25);
+    }
+
+    .profile-actions {
+        margin-top: 30px;
+    }
+
+    .profile-actions .btn {
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+
+    .profile-actions .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .badge {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+        border-radius: 20px;
+    }
+
+    textarea.form-control {
+        min-height: 100px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .profile-actions .btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .profile-actions .btn:last-child {
+            margin-left: 0 !important;
+        }
+    }
+
+    .badge.bg-primary {
+        background-color: #ff6b35 !important;
+    }
+    
+    .btn-primary {
+        background-color: #ff6b35;
+        border-color: #ff6b35;
+    }
+    
+    .btn-primary:hover {
+        background-color: #ff8c42;
+        border-color: #ff8c42;
+    }
+    
+    .btn-outline-secondary {
+        color: #ff6b35;
+        border-color: #ff6b35;
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: #ff6b35;
+        border-color: #ff6b35;
+        color: white;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add Bootstrap classes to form inputs
+        const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="number"], input[type="tel"], textarea, select');
+        inputs.forEach(input => {
+            input.classList.add('form-control');
+        });
+
+        // Add specific class for select elements
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => {
+            select.classList.add('form-select');
+        });
+
+        // Show success message with animation
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            alert.style.animation = 'slideIn 0.5s ease-out';
+        });
+    });
+</script>
+{% endblock %} 
