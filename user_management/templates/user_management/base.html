@@ -187,6 +187,152 @@
                 margin-left: 250px;
             }
         }
+
+        /* Light Theme */
+        :root[data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f0f2f5;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #e0e0e0;
+            --sidebar-bg: #4481eb;
+            --sidebar-text: #ffffff;
+            --navbar-bg: #4481eb;
+            --navbar-text: #ffffff;
+            --card-bg: #ffffff;
+            --hover-bg: #e9ecef;
+            --link-color: #4481eb;
+            --link-hover: #2563eb;
+        }
+
+        /* Dark Theme */
+        :root[data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2c2c2c;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --border-color: #404040;
+            --sidebar-bg: #2c2c2c;
+            --sidebar-text: #ffffff;
+            --navbar-bg: #2c2c2c;
+            --card-bg: #2c2c2c;
+            --hover-bg: #404040;
+        }
+
+        /* Orange Theme */
+        :root[data-theme="orange"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #fff5f0;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --border-color: #ffded0;
+            --sidebar-bg: #ff6b35;
+            --sidebar-text: #ffffff;
+            --navbar-bg: #ff8c42;
+            --card-bg: #ffffff;
+            --hover-bg: rgba(255, 140, 66, 0.1);
+        }
+
+        /* Apply theme variables */
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .navbar {
+            background: var(--navbar-bg) !important;
+        }
+
+        .sidebar {
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-color: var(--border-color);
+        }
+
+        .quick-action-item {
+            background-color: var(--bg-secondary);
+        }
+
+        .quick-action-item:hover {
+            background-color: var(--hover-bg);
+        }
+
+        /* Theme Switcher Styling */
+        .theme-switcher select {
+            background-color: transparent;
+            border-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .theme-switcher select:focus {
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: none;
+        }
+
+        /* Update theme-specific styles */
+        [data-theme="light"] .navbar {
+            color: var(--navbar-text);
+        }
+
+        [data-theme="light"] .nav-link {
+            color: var(--navbar-text) !important;
+        }
+
+        [data-theme="light"] .welcome-section {
+            background: var(--navbar-bg);
+            color: var(--navbar-text);
+        }
+
+        [data-theme="light"] .welcome-title,
+        [data-theme="light"] .text-muted,
+        [data-theme="light"] .date-time {
+            color: var(--navbar-text) !important;
+        }
+
+        [data-theme="light"] .sidebar-link {
+            color: var(--sidebar-text);
+        }
+
+        [data-theme="light"] .nav-section-title {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        [data-theme="light"] .sidebar-user .user-info h6,
+        [data-theme="light"] .sidebar-user .user-avatar i {
+            color: var(--sidebar-text);
+        }
+
+        [data-theme="light"] .sidebar-user .user-info span {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        [data-theme="light"] a {
+            color: var(--link-color);
+        }
+
+        [data-theme="light"] a:hover {
+            color: var(--link-hover);
+        }
+
+        [data-theme="light"] .btn-primary {
+            background-color: var(--navbar-bg);
+            border-color: var(--navbar-bg);
+            color: white;
+        }
+
+        [data-theme="light"] .btn-primary:hover {
+            background-color: var(--link-hover);
+            border-color: var(--link-hover);
+        }
+
+        [data-theme="light"] .stat-card-icon,
+        [data-theme="light"] .quick-action-icon {
+            background-color: var(--navbar-bg) !important;
+        }
     </style>
 </head>
 <body>
@@ -195,6 +341,16 @@
             <a class="navbar-brand" href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}/{% endif %}">
                 <i class="bi bi-scissors me-2"></i>TailorPro
             </a>
+            <div class="navbar-nav ms-auto me-4">
+                <div class="theme-switcher d-flex align-items-center">
+                    <label class="me-2 text-white">Theme:</label>
+                    <select class="form-select form-select-sm" id="themeSelector">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="orange">Orange</option>
+                    </select>
+                </div>
+            </div>
             <div class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
                     <span class="nav-link">
@@ -298,6 +454,23 @@
                         submenu.classList.add('show');
                     }
                 }
+            });
+        });
+
+        // Theme switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeSelector = document.getElementById('themeSelector');
+            
+            // Load saved theme or default to 'orange'
+            const savedTheme = localStorage.getItem('theme') || 'orange';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            themeSelector.value = savedTheme;
+
+            // Theme change handler
+            themeSelector.addEventListener('change', function() {
+                const theme = this.value;
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
             });
         });
     </script>
