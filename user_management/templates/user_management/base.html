@@ -8,14 +8,18 @@
         /* Sidebar Styling */
         .sidebar {
             min-height: calc(100vh - 56px);
-            background: #ff6b35;
+            max-height: calc(100vh - 56px);
+            background: var(--sidebar-bg);
             padding: 20px 0;
-            color: white;
+            color: var(--sidebar-text);
             position: fixed;
             width: inherit;
             max-width: inherit;
             overflow-y: auto;
+            overflow-x: hidden;
             transition: all 0.3s ease;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
         }
 
         .sidebar-brand {
@@ -333,6 +337,29 @@
         [data-theme="light"] .quick-action-icon {
             background-color: var(--navbar-bg) !important;
         }
+
+        /* Webkit (Chrome, Safari, Edge) scrollbar styling */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Ensure content doesn't overlap with scrollbar */
+        .sidebar .nav-section:last-child {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -417,6 +444,49 @@
                             </a>
                         </div>
                     </div>
+
+                    {% if user.user_type == 'CUSTOMER' or user.user_type == 'TAILOR' %}
+                    <div class="nav-section">
+                        <div class="nav-section-title">Customer Management</div>
+                        <div class="menu-toggle" data-bs-toggle="collapse" data-bs-target="#customerManagement">
+                            <a class="sidebar-link">
+                                <i class="bi bi-person-lines-fill"></i>
+                                {% if user.user_type == 'CUSTOMER' %}
+                                    Customer Services
+                                {% else %}
+                                    Customer Management
+                                {% endif %}
+                                <i class="bi bi-chevron-down ms-auto"></i>
+                            </a>
+                        </div>
+                        <div class="sidebar-submenu collapse" id="customerManagement">
+                            <a href="{% url 'customer_management:measurement_list' %}" class="sidebar-link {% if request.resolver_match.url_name == 'measurement_list' %}active{% endif %}">
+                                <i class="bi bi-rulers"></i>
+                                {% if user.user_type == 'CUSTOMER' %}
+                                    My Measurements
+                                {% else %}
+                                    Customer Measurements
+                                {% endif %}
+                            </a>
+                            <a href="{% url 'customer_management:order_list' %}" class="sidebar-link {% if request.resolver_match.url_name == 'order_list' %}active{% endif %}">
+                                <i class="bi bi-bag"></i>
+                                {% if user.user_type == 'CUSTOMER' %}
+                                    My Orders
+                                {% else %}
+                                    Customer Orders
+                                {% endif %}
+                            </a>
+                            <a href="{% url 'customer_management:notification_list' %}" class="sidebar-link {% if request.resolver_match.url_name == 'notification_list' %}active{% endif %}">
+                                <i class="bi bi-bell"></i>
+                                {% if user.user_type == 'CUSTOMER' %}
+                                    My Notifications
+                                {% else %}
+                                    Customer Notifications
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <!-- Main Content -->

@@ -1,0 +1,214 @@
+{% extends 'user_management/base.html' %}
+
+{% block title %}Create Order - TailorPro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">
+                        <i class="bi bi-bag-plus me-2"></i>Create New Order
+                    </h2>
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Order Details -->
+                        <div class="order-section mb-4">
+                            <h5 class="section-title">Order Details</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Tailor</label>
+                                    {{ order_form.tailor }}
+                                    {% if order_form.tailor.errors %}
+                                        <div class="text-danger small">{{ order_form.tailor.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Delivery Date</label>
+                                    {{ order_form.delivery_date }}
+                                    {% if order_form.delivery_date.errors %}
+                                        <div class="text-danger small">{{ order_form.delivery_date.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Total Amount</label>
+                                    {{ order_form.total_amount }}
+                                    {% if order_form.total_amount.errors %}
+                                        <div class="text-danger small">{{ order_form.total_amount.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Advance Payment</label>
+                                    {{ order_form.advance_paid }}
+                                    {% if order_form.advance_paid.errors %}
+                                        <div class="text-danger small">{{ order_form.advance_paid.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Measurement Reference</label>
+                                    {{ order_form.measurement }}
+                                    {% if order_form.measurement.errors %}
+                                        <div class="text-danger small">{{ order_form.measurement.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Special Instructions</label>
+                                    {{ order_form.special_instructions }}
+                                    {% if order_form.special_instructions.errors %}
+                                        <div class="text-danger small">{{ order_form.special_instructions.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        {{ order_form.is_rush_order }}
+                                        <label class="form-check-label" for="{{ order_form.is_rush_order.id_for_label }}">
+                                            Rush Order (Additional charges may apply)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Order Items -->
+                        <div class="order-section mb-4">
+                            <h5 class="section-title">Order Items</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Garment Type</label>
+                                    {{ item_form.garment_type }}
+                                    {% if item_form.garment_type.errors %}
+                                        <div class="text-danger small">{{ item_form.garment_type.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Quantity</label>
+                                    {{ item_form.quantity }}
+                                    {% if item_form.quantity.errors %}
+                                        <div class="text-danger small">{{ item_form.quantity.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Price</label>
+                                    {{ item_form.price }}
+                                    {% if item_form.price.errors %}
+                                        <div class="text-danger small">{{ item_form.price.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Description</label>
+                                    {{ item_form.description }}
+                                    {% if item_form.description.errors %}
+                                        <div class="text-danger small">{{ item_form.description.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-check-circle me-2"></i>Create Order
+                            </button>
+                            <a href="{% url 'customer_management:order_list' %}" class="btn btn-outline-secondary btn-lg px-5 ms-2">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 15px;
+        margin: 20px 0;
+    }
+
+    .section-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .order-section {
+        background-color: var(--bg-secondary);
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .form-control, .form-select {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 10px 15px;
+        background-color: var(--card-bg);
+        color: var(--text-primary);
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--sidebar-bg);
+        box-shadow: 0 0 0 0.25rem rgba(255, 107, 53, 0.25);
+    }
+
+    textarea.form-control {
+        min-height: 100px;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+    }
+
+    .btn-primary {
+        background-color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--navbar-bg);
+        border-color: var(--navbar-bg);
+    }
+
+    .btn-outline-secondary {
+        color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+        color: white;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add Bootstrap classes to form inputs
+        const inputs = document.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], textarea, select');
+        inputs.forEach(input => {
+            if (input.type === 'checkbox') {
+                input.classList.add('form-check-input');
+            } else {
+                input.classList.add('form-control');
+            }
+        });
+
+        // Add specific class for select elements
+        const selects = document.querySelectorAll('select');
+        selects.forEach(select => {
+            select.classList.add('form-select');
+        });
+    });
+</script>
+{% endblock %} 

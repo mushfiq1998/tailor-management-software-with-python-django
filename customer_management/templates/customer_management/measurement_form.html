@@ -1,0 +1,244 @@
+{% extends 'user_management/base.html' %}
+
+{% block title %}Add Measurements - TailorPro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">
+                        <i class="bi bi-rulers me-2"></i>{{ title }}
+                    </h2>
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Upper Body Measurements -->
+                        <div class="measurement-section mb-4">
+                            <h5 class="section-title">Upper Body Measurements</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Shoulder (inches)</label>
+                                    {{ form.shoulder }}
+                                    {% if form.shoulder.help_text %}
+                                        <div class="form-text">{{ form.shoulder.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.shoulder.errors %}
+                                        <div class="text-danger small">{{ form.shoulder.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Chest (inches)</label>
+                                    {{ form.chest }}
+                                    {% if form.chest.help_text %}
+                                        <div class="form-text">{{ form.chest.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.chest.errors %}
+                                        <div class="text-danger small">{{ form.chest.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Waist (inches)</label>
+                                    {{ form.waist }}
+                                    {% if form.waist.help_text %}
+                                        <div class="form-text">{{ form.waist.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.waist.errors %}
+                                        <div class="text-danger small">{{ form.waist.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Hip (inches)</label>
+                                    {{ form.hip }}
+                                    {% if form.hip.help_text %}
+                                        <div class="form-text">{{ form.hip.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.hip.errors %}
+                                        <div class="text-danger small">{{ form.hip.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Sleeve Length (inches)</label>
+                                    {{ form.sleeve_length }}
+                                    {% if form.sleeve_length.help_text %}
+                                        <div class="form-text">{{ form.sleeve_length.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.sleeve_length.errors %}
+                                        <div class="text-danger small">{{ form.sleeve_length.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lower Body Measurements -->
+                        <div class="measurement-section mb-4">
+                            <h5 class="section-title">Lower Body Measurements</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Inseam (inches)</label>
+                                    {{ form.inseam }}
+                                    {% if form.inseam.help_text %}
+                                        <div class="form-text">{{ form.inseam.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.inseam.errors %}
+                                        <div class="text-danger small">{{ form.inseam.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Outseam (inches)</label>
+                                    {{ form.outseam }}
+                                    {% if form.outseam.help_text %}
+                                        <div class="form-text">{{ form.outseam.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.outseam.errors %}
+                                        <div class="text-danger small">{{ form.outseam.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Thigh (inches)</label>
+                                    {{ form.thigh }}
+                                    {% if form.thigh.help_text %}
+                                        <div class="form-text">{{ form.thigh.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.thigh.errors %}
+                                        <div class="text-danger small">{{ form.thigh.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Knee (inches)</label>
+                                    {{ form.knee }}
+                                    {% if form.knee.help_text %}
+                                        <div class="form-text">{{ form.knee.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.knee.errors %}
+                                        <div class="text-danger small">{{ form.knee.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Calf (inches)</label>
+                                    {{ form.calf }}
+                                    {% if form.calf.help_text %}
+                                        <div class="form-text">{{ form.calf.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.calf.errors %}
+                                        <div class="text-danger small">{{ form.calf.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="measurement-section mb-4">
+                            <h5 class="section-title">Additional Notes</h5>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="form-label">Notes</label>
+                                    {{ form.notes }}
+                                    {% if form.notes.help_text %}
+                                        <div class="form-text">{{ form.notes.help_text }}</div>
+                                    {% endif %}
+                                    {% if form.notes.errors %}
+                                        <div class="text-danger small">{{ form.notes.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-check-circle me-2"></i>Save Measurements
+                            </button>
+                            <a href="{% url 'customer_management:measurement_list' %}" class="btn btn-outline-secondary btn-lg px-5 ms-2">
+                                <i class="bi bi-x-circle me-2"></i>Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+        border-radius: 15px;
+        margin: 20px 0;
+    }
+
+    .section-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .measurement-section {
+        background-color: var(--bg-secondary);
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .form-control {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 10px 15px;
+        background-color: var(--card-bg);
+        color: var(--text-primary);
+    }
+
+    .form-control:focus {
+        border-color: var(--sidebar-bg);
+        box-shadow: 0 0 0 0.25rem rgba(255, 107, 53, 0.25);
+    }
+
+    textarea.form-control {
+        min-height: 100px;
+    }
+
+    .btn-primary {
+        background-color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--navbar-bg);
+        border-color: var(--navbar-bg);
+    }
+
+    .btn-outline-secondary {
+        color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+    }
+
+    .btn-outline-secondary:hover {
+        background-color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+        color: white;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    .form-text {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add Bootstrap classes to form inputs
+        const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea');
+        inputs.forEach(input => {
+            input.classList.add('form-control');
+        });
+    });
+</script>
+{% endblock %} 

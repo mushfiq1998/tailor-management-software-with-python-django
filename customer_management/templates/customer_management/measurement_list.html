@@ -1,0 +1,299 @@
+{% extends 'user_management/base.html' %}
+
+{% block title %}Measurements - TailorPro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">
+            <i class="bi bi-rulers me-2"></i>
+            {% if user.user_type == 'CUSTOMER' %}My Measurements{% else %}Customer Measurements{% endif %}
+        </h2>
+        <a href="{% url 'customer_management:measurement_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-2"></i>Add New Measurement
+        </a>
+    </div>
+
+    <!-- Measurements List -->
+    {% if measurements %}
+        <div class="row">
+            {% for measurement in measurements %}
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-calendar3 me-2"></i>
+                                {{ measurement.date_taken|date:"F j, Y" }}
+                            </h5>
+                            <div class="action-buttons">
+                                <a href="{% url 'customer_management:measurement_edit' measurement.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ measurement.pk }}">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Upper Body Measurements -->
+                        <div class="measurement-section mb-4">
+                            <h6 class="section-title">Upper Body Measurements</h6>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Shoulder:</span>
+                                        <span class="value">{{ measurement.shoulder }} inches</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Chest:</span>
+                                        <span class="value">{{ measurement.chest }} inches</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Waist:</span>
+                                        <span class="value">{{ measurement.waist }} inches</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Hip:</span>
+                                        <span class="value">{{ measurement.hip }} inches</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Sleeve Length:</span>
+                                        <span class="value">{{ measurement.sleeve_length }} inches</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lower Body Measurements -->
+                        <div class="measurement-section">
+                            <h6 class="section-title">Lower Body Measurements</h6>
+                            <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Inseam:</span>
+                                        <span class="value">{{ measurement.inseam }} inches</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Outseam:</span>
+                                        <span class="value">{{ measurement.outseam }} inches</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Thigh:</span>
+                                        <span class="value">{{ measurement.thigh }} inches</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Knee:</span>
+                                        <span class="value">{{ measurement.knee }} inches</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="measurement-item">
+                                        <span class="label">Calf:</span>
+                                        <span class="value">{{ measurement.calf }} inches</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if measurement.notes %}
+                        <div class="mt-3">
+                            <h6 class="section-title">Notes</h6>
+                            <p class="notes">{{ measurement.notes }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <div class="empty-state">
+                <i class="bi bi-rulers display-1 text-muted"></i>
+                <h3 class="mt-3">No Measurements Found</h3>
+                <p class="text-muted">Start by adding your first measurement.</p>
+                <a href="{% url 'customer_management:measurement_create' %}" class="btn btn-primary mt-3">
+                    <i class="bi bi-plus-lg me-2"></i>Add New Measurement
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .card {
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: var(--bg-secondary);
+        border-bottom: 1px solid var(--border-color);
+        padding: 1rem;
+        border-radius: 15px 15px 0 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .section-title {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .measurement-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem;
+        background-color: var(--bg-secondary);
+        border-radius: 8px;
+    }
+
+    .measurement-item .label {
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .measurement-item .value {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .notes {
+        padding: 1rem;
+        background-color: var(--bg-secondary);
+        border-radius: 8px;
+        color: var(--text-secondary);
+    }
+
+    .empty-state {
+        color: var(--text-secondary);
+    }
+
+    .btn-primary {
+        background-color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--navbar-bg);
+        border-color: var(--navbar-bg);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .action-buttons .btn {
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        white-space: nowrap;
+        position: relative;
+        z-index: 3;
+    }
+
+    .action-buttons .btn i {
+        font-size: 1rem;
+    }
+
+    .btn-outline-primary,
+    .btn-outline-danger {
+        background-color: transparent;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary {
+        color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+        background-color: var(--bg-secondary);
+    }
+
+    .btn-outline-primary:hover {
+        background-color: var(--sidebar-bg);
+        border-color: var(--sidebar-bg);
+        color: white;
+    }
+
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+        background-color: var(--bg-secondary);
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: white;
+    }
+
+    .modal-content {
+        border-radius: 15px;
+        border: none;
+    }
+
+    .modal-header {
+        background-color: var(--bg-secondary);
+        border-radius: 15px 15px 0 0;
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--border-color);
+    }
+</style>
+
+<!-- Add Delete Confirmation Modal for each measurement -->
+{% for measurement in measurements %}
+<div class="modal fade" id="deleteModal{{ measurement.pk }}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete these measurements from {{ measurement.date_taken|date:"F j, Y" }}?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form action="{% url 'customer_management:measurement_delete' measurement.pk %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %} 
